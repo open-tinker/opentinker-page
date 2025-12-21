@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
 
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="static/js/index.js"></script>
@@ -154,13 +155,20 @@
           <h2 class="title is-3">System Architecture & Protocol</h2>
           <div class="content">
             <p>
-              The architecture implements a clear separation of concerns, ensuring local lightweight programming and remote heavy-lifting execution:
+              OpenTinker's architecture consists of three core components with a streamlined three-phase communication protocol:
             </p>
+            <h5 class="title is-5" style="margin-bottom: 0.5rem;">Architecture Components</h5>
             <ul class="feature-list">
-              <li><i class="fas fa-laptop-code"></i> <strong>Local Client:</strong> Submits experiments and defines environment logic. It remains lightweight and GPU-free.</li>
-              <li><i class="fas fa-network-wired"></i> <strong>Global Scheduler:</strong> Receives requests, manages the GPU cluster pool, and spawns dedicated <strong>Workers</strong> for each job.</li>
-              <li><i class="fas fa-bolt"></i> <strong>Direct Protocol:</strong> Once a Worker is active, it establishes a direct, high-throughput HTTP connection with the Client to stream training data and metrics in real-time.</li>
+              <li><i class="fas fa-laptop-code"></i> <strong>Client:</strong> Lightweight local interface for defining environments and submitting training jobs. Requires no local GPU.</li>
+              <li><i class="fas fa-server"></i> <strong>Scheduler & Worker Pool:</strong> Central coordinator that manages GPU resource allocation and maintains a pool of available Workers.</li>
+              <li><i class="fas fa-microchip"></i> <strong>Training Server (GPU Worker):</strong> Dedicated GPU-powered worker that executes model training and rollout generation.</li>
             </ul>
+            <h5 class="title is-5" style="margin-bottom: 0.5rem; margin-top: 1rem;">Protocol Flow</h5>
+            <ol class="feature-list">
+              <li><i class="fas fa-paper-plane"></i> <strong>Job Submit:</strong> Client sends job request (model config, training/inference args) to the Scheduler.</li>
+              <li><i class="fas fa-tasks"></i> <strong>Allocation:</strong> Scheduler allocates GPU Worker(s) from the pool and spawns a Training/Inference Server instance.</li>
+              <li><i class="fas fa-bolt"></i> <strong>Data Streaming:</strong> Client establishes a link with the Training/Inference Server for real-time metrics.</li>
+            </ol>
           </div>
         </div>
         <div class="column is-6 has-text-centered">
@@ -361,7 +369,7 @@ run_inference(
               <li><strong>TERMINATED:</strong> Episode complete.</li>
             </ol>
             <p>
-              This design supports both single-turn reasoning (Math) and multi-turn sequential decision making (Gomoku) within a unified codebase, and can be easily extended to any similar agentic environments.
+              This design supports both single-turn reasoning (Math) and multi-turn sequential decision making (Gomoku, Math Tool Calling) within a unified codebase, and can be easily extended to any similar agentic environments.
             </p>
           </div>
         </div>
