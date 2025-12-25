@@ -139,4 +139,54 @@ $(document).ready(function() {
     // Setup video autoplay for carousel
     setupVideoCarouselAutoplay();
 
-})
+    // Navbar burger toggle
+    $(".navbar-burger").click(function() {
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+    });
+
+    // Load blog posts if container exists
+    loadBlogPosts();
+});
+
+function loadBlogPosts() {
+    const container = document.getElementById('blog-posts-container');
+    if (!container) return; // Only run on blog index page
+
+    // Check if blogPosts data is available (loaded from posts.js)
+    if (typeof blogPosts === 'undefined' || !Array.isArray(blogPosts)) {
+        console.error('Blog posts data not found.');
+        container.innerHTML = '<p class="has-text-centered">Failed to load blog posts.</p>';
+        return;
+    }
+
+    // Clear loading indicator
+    container.innerHTML = '';
+
+    blogPosts.forEach(post => {
+        const postHTML = `
+        <div class="card mb-6">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4">
+                            <a href="${post.link}" class="has-text-dark">${post.title}</a>
+                        </p>
+                        <p class="subtitle is-6">
+                            <span class="icon is-small"><i class="far fa-calendar-alt"></i></span> 
+                            ${post.date}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    ${post.summary}
+                    <br>
+                    <a href="${post.link}" class="button is-link is-light is-small mt-3">Read More</a>
+                </div>
+            </div>
+        </div>
+        `;
+        container.innerHTML += postHTML;
+    });
+}
