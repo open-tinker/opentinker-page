@@ -131,10 +131,14 @@ $(document).ready(function() {
 		autoplaySpeed: 5000,
     }
 
-	// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
+    // Initialize all div with carousel class
+    if (typeof bulmaCarousel !== 'undefined') {
+        var carousels = bulmaCarousel.attach('.carousel', options);
+    }
 	
-    bulmaSlider.attach();
+    if (typeof bulmaSlider !== 'undefined') {
+        bulmaSlider.attach();
+    }
     
     // Setup video autoplay for carousel
     setupVideoCarouselAutoplay();
